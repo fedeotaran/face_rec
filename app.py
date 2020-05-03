@@ -39,26 +39,24 @@ while True:
     rgb_small_frame = small_frame[:, :, ::-1]
 
     # Solo procesa una sóla vez el frame
-    if process_this_frame:
-        # Busca todas las caras en la imagen de video y las encodea
-        face_locations = face_recognition.face_locations(rgb_small_frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+    # Busca todas las caras en la imagen de video y las encodea
+    face_locations = face_recognition.face_locations(rgb_small_frame)
+    face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
-        face_names = []
-        for face_encoding in face_encodings:
-            # Compara la cara y con las que sabemos que son conocidas.
-            matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-            name = "Unknown"
+    face_names = []
+    for face_encoding in face_encodings:
+        # Compara la cara y con las que sabemos que son conocidas.
+        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+        name = "Unknown"
 
-            # Usa la cara con menos diferencia
-            face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-            best_match_index = np.argmin(face_distances)
-            if matches[best_match_index]:
-                name = known_face_names[best_match_index]
+        # Usa la cara con menos diferencia
+        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+        best_match_index = np.argmin(face_distances)
+        if matches[best_match_index]:
+            name = known_face_names[best_match_index]
 
-            face_names.append(name)
+        face_names.append(name)
 
-    process_this_frame = not process_this_frame
 
 
     # Muestra de resultado
